@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+               xmlns:s="library://ns.adobe.com/flex/spark" 
+               xmlns:mx="library://ns.adobe.com/flex/halo"
+			   title="Модель"
+			   destructionPolicy="never"
+			   >
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Style source="css/ItemView.css" />
+	<fx:Script>
+		<![CDATA[
+		import flash.display.BitmapData;
+		import flash.display.DisplayObject;
+		import mx.core.UIComponent;
+		[Bindable]
+		public var image:DisplayObject;
+		[Bindable]
+		public var header:String;
+		[Bindable]
+		public var text:String;
+		
+		public var modelView:UIComponent = new UIComponent();
+		
+		private function init():void
+		{
+			imageBitmap.addElement(modelView);
+			
+		}
+		public function loadModel(model:DisplayObject):void
+		{
+			if(image != null)
+				modelView.removeChild(image);
+			modelView.addChild(model);
+			trace('model res: '+model.getRect(this).width+' x '+model.getRect(this).height);
+			image = model;
+			//image.width *= stage.height*0.7 / image.height;
+			//image.height *= stage.height * 0.7 / image.height;
+			image.width *=  imageBitmap.height/model.getRect(this).height;
+			image.height *= imageBitmap.height/model.getRect(this).height;
+		}
+		private function showModelTheory():void
+		{
+			currentState = currentState == "theoryState" ? "modelState" : "theoryState";
+		}
+		
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:VerticalLayout paddingTop="20" paddingLeft="20" />
+	</s:layout>
+	<s:states>
+		<s:State name="modelState" />
+		<s:State name="theoryState" />
+	</s:states>
+	<s:Label text="{header}" styleName="headerLabel" />
+	<s:Group>
+		<s:layout>
+			<s:HorizontalLayout/>
+		</s:layout>
+		<s:Button label.modelState="Теория" label.theoryState="Модель" id="modelBtn" click="showModelTheory()" />
+	</s:Group>
+	<s:Group id="imageBitmap" height="100%" includeIn="modelState" initialize="init()">
+		<s:layout>
+			<s:VerticalLayout />
+		</s:layout>
+	</s:Group>
+	<s:Scroller id="scroller" width="100%" height="100%" includeIn="theoryState">
+		<s:Group>
+			<s:Label id="textLabel" text="{text}" width="100%" />
+		</s:Group>
+	</s:Scroller>
+
+</s:View>

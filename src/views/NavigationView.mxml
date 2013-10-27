@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+               xmlns:s="library://ns.adobe.com/flex/spark" 
+               xmlns:mx="library://ns.adobe.com/flex/halo">
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Style source="css\NavigationView.css" />
+	<fx:Script>
+		<![CDATA[
+		import events.AppContextEvent;
+		import events.AppEvent;
+		private function goToHome():void
+		{
+			dispatchEvent(new AppContextEvent(AppContextEvent.GO_TO_HOME));
+		}
+		private function exitApp():void
+		{
+			dispatchEvent(new AppEvent(AppEvent.EXIT));
+		}
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:HorizontalLayout />
+	</s:layout>
+	<s:Button label="HOME" click="goToHome()" styleName="homeBtn" />
+	<s:Button label="EXIT" click="exitApp()" styleName="exitBtn" />
+	
+</s:View>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+               xmlns:s="library://ns.adobe.com/flex/spark" 
+               xmlns:mx="library://ns.adobe.com/flex/halo"
+			   xmlns:ui="ui.*"
+			   visible = "true"
+			   height="100%"
+			   width="100%"
+			   title="Список моделей"
+			   destructionPolicy = "never"
+			   addedToStage="activateHandle()"
+			   >
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+		import events.AppEvent;
+		import mx.collections.ArrayCollection;
+		import events.*;
+		import flash.events.MouseEvent;
+		import spark.events.IndexChangeEvent;
+		import spark.core.NavigationUnit;
+		[Bindable]
+		public var itemlist:ArrayCollection = new ArrayCollection();
+		/*public function addToNewsList(list:Array):void
+		{
+			for each(var element:* in list)
+			{
+				var e:NewsItem = NewsItem(element);
+				data.addItem( {header: e.header, annotation: e.annotation, url: e.URL } );
+			}
+		}*/
+			private function activateHandle():void
+			{
+				trace('activate');
+				testList.selectedItem = null;
+			}
+			public function changeFunc(e:IndexChangeEvent):void
+			{
+				
+			}
+			private function getNextList():void
+			{
+				dispatchEvent(new ListEvent(ListEvent.GET_NEXT_LIST));
+			}
+			private function rollOverFunc():void
+			{
+				
+			}
+			private function mouseDownHandle():void
+			{
+				if (isScrolledToEnd())
+					getNextList();
+			}
+			private function changeHandle():void
+			{
+				//dispatchEvent(new ItemEvent(NewsItemEvent.LOAD_NEWS_ITEM, testList.selectedItem));
+				dispatchEvent(new ItemEvent(ItemEvent.LOAD_ITEM,testList.selectedItem));
+			}
+			private function init():void
+			{
+				trace('scroll_delta: '+testList.layout.getVerticalScrollPositionDelta(NavigationUnit.DOWN));
+			}
+			public function isScrolledToEnd():Boolean
+			{
+				if (testList.layout.verticalScrollPosition > testList.layout.getVerticalScrollPositionDelta(NavigationUnit.END))
+					return true;
+				trace('scroll_delta_end: ' + testList.layout.getVerticalScrollPositionDelta(NavigationUnit.END));
+				if (testList.layout.getVerticalScrollPositionDelta(NavigationUnit.END) == 0)
+					return true;
+				return false;
+			}
+			public function scrollerUpdate():void
+			{
+				trace('scroll_delta_end: ' + testList.layout.getVerticalScrollPositionDelta(NavigationUnit.END));
+				if (testList.layout.getVerticalScrollPositionDelta(NavigationUnit.END) == 0) //независимо от размера выдает "0" в самом начале. Может быть параметр дельты скролла вычисляется после отрисовки?
+					getNextList();
+			}
+
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:HorizontalLayout horizontalAlign="center" paddingTop="20" />
+	</s:layout>
+	<s:List id="testList" labelField="description" dataProvider="{itemlist}" width="100%" height="100%" change="changeHandle()" itemRenderer="ui.ItemListRenderer" />
+	
+	<!--<ui:NewsList id="newsList" itemRenderer="ui.NewsListRenderer" dataProvider="{data}" change="changeFunc(event)"
+		pageScrollingEnabled="false" scrollSnappingMode="none" height="100%" width="100%" 
+	/> -->
+</s:View>
