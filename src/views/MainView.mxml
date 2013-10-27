@@ -62,20 +62,18 @@
 			}
 			private function init():void
 			{
-				trace('scroll_delta: '+testList.layout.getVerticalScrollPositionDelta(NavigationUnit.DOWN));
+				
 			}
 			public function isScrolledToEnd():Boolean
 			{
 				if (testList.layout.verticalScrollPosition > testList.layout.getVerticalScrollPositionDelta(NavigationUnit.END))
 					return true;
-				trace('scroll_delta_end: ' + testList.layout.getVerticalScrollPositionDelta(NavigationUnit.END));
 				if (testList.layout.getVerticalScrollPositionDelta(NavigationUnit.END) == 0)
 					return true;
 				return false;
 			}
 			public function scrollerUpdate():void
 			{
-				trace('scroll_delta_end: ' + testList.layout.getVerticalScrollPositionDelta(NavigationUnit.END));
 				if (testList.layout.getVerticalScrollPositionDelta(NavigationUnit.END) == 0) //независимо от размера выдает "0" в самом начале. Может быть параметр дельты скролла вычисляется после отрисовки?
 					getNextList();
 			}
